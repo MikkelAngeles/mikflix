@@ -331,6 +331,7 @@ function getCinema($a, $b) {
 		        titledata.posterPath
 		FROM movies
 		INNER JOIN titledata ON movies.titleId = titledata.titleId
+		ORDER BY titledata.popularity DESC
 		LIMIT $a, $b"
 	);
 	while($row = mysqli_fetch_assoc($rs)) {
@@ -339,10 +340,90 @@ function getCinema($a, $b) {
 	echo json_encode($arr);
 }
 
+function queryServerReturnJson($query) {
+	$arr = [];
+	$rs = queryServer($query);
+	while($row = mysqli_fetch_assoc($rs)) {
+		array_push($arr, $row);
+	}
+	echo json_encode($arr);
+}
 
 if(isset($_GET["authKey"]) && $_GET["authKey"] == "getCinema") {
 	getCinema($_GET['offset_a'], $_GET['offset_b']);
 }
+if(isset($_GET["authKey"]) && $_GET["authKey"] == "getRecentlyAdded") {
+	$max = $_GET['max'];
+	$query = ("SELECT 
+				movies.id,
+				movies.titleId,
+		        movies.file,
+		        titledata.originalTitle,
+		        titledata.genre,
+		        titledata.overview,
+		        titledata.adult,
+		        titledata.releaseDate,
+		        titledata.language,
+		        titledata.voteAverage,
+		        titledata.voteCount,
+		        titledata.popularity,
+		        titledata.posterPath
+		FROM movies
+		INNER JOIN titledata ON movies.titleId = titledata.titleId
+		ORDER BY movies.id DESC
+		LIMIT $max");
+	queryServerReturnJson($query);
+}
+
+if(isset($_GET["authKey"]) && $_GET["authKey"] == "getTitleData") {
+	$titleId = $_GET['titleId'];
+	$query = ("SELECT 
+				movies.id,
+				movies.titleId,
+		        movies.file,
+		        titledata.originalTitle,
+		        titledata.genre,
+		        titledata.overview,
+		        titledata.adult,
+		        titledata.releaseDate,
+		        titledata.language,
+		        titledata.voteAverage,
+		        titledata.voteCount,
+		        titledata.popularity,
+		        titledata.posterPath
+		FROM movies
+		INNER JOIN titledata ON movies.titleId = titledata.titleId
+		WHERE movies.titleId = '$titleId'
+		LIMIT 1");
+	queryServerReturnJson($query);
+}
+
+
+function getViewingHistory($userId, $status) {
+	$query = ("SELECT * FROM viewing_history WHERE userId = '$userId' AND status = '$status'");
+	queryServerReturnJson($query);
+}
+//Status null:   Not yet watched
+if(isset($_GET["authKey"]) && $_GET["authKey"] == "getUnwatched") {
+	getViewingHistory($_GET['userId'], null);
+}
+//Status 0: return viewing history.
+if(isset($_GET["authKey"]) && $_GET["authKey"] == "getViewingHistory") {
+	getViewingHistory($_GET['userId'], 0);
+}
+//Status 1: Watched, but incomplete
+if(isset($_GET["authKey"]) && $_GET["authKey"] == "getIncomplete") {
+	getViewingHistory($_GET['userId'], 1);
+}
+//Status 2: Watched and completed
+if(isset($_GET["authKey"]) && $_GET["authKey"] == "getCompleted") {
+	getViewingHistory($_GET['userId'], 2);
+}
+
+
+
+
+
 
 function generateFake() {
 	queryServer("insert into movies (titleId, title) values ('10201', 'Yes Man')");
