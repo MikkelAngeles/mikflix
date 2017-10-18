@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: 127.0.0.1
--- Genereringstid: 18. 10 2017 kl. 13:11:57
+-- Genereringstid: 18. 10 2017 kl. 21:55:47
 -- Serverversion: 10.1.21-MariaDB
 -- PHP-version: 7.1.1
 
@@ -426,6 +426,28 @@ INSERT INTO `topnav` (`id`, `name`, `target`, `rank`) VALUES
 (8, 'Hollywood', 'hollywood.php', 6),
 (9, 'DB', 'http://localhost:8000/phpmyadmin/', 7);
 
+-- --------------------------------------------------------
+
+--
+-- Struktur-dump for tabellen `viewing_history`
+--
+
+CREATE TABLE `viewing_history` (
+  `trackingId` int(255) NOT NULL,
+  `userId` int(255) NOT NULL,
+  `titleId` int(255) NOT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `mediaTimestamp` varchar(255) NOT NULL,
+  `timestamp` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Data dump for tabellen `viewing_history`
+--
+
+INSERT INTO `viewing_history` (`trackingId`, `userId`, `titleId`, `status`, `mediaTimestamp`, `timestamp`) VALUES
+(1, 6, 1726, '1', '00:01:34', '2017-10-18 16:40:13');
+
 --
 -- Begrænsninger for dumpede tabeller
 --
@@ -468,6 +490,13 @@ ALTER TABLE `topnav`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks for tabel `viewing_history`
+--
+ALTER TABLE `viewing_history`
+  ADD PRIMARY KEY (`userId`),
+  ADD KEY `trackingId` (`trackingId`);
+
+--
 -- Brug ikke AUTO_INCREMENT for slettede tabeller
 --
 
@@ -501,6 +530,11 @@ ALTER TABLE `titledata`
 --
 ALTER TABLE `topnav`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- Tilføj AUTO_INCREMENT i tabel `viewing_history`
+--
+ALTER TABLE `viewing_history`
+  MODIFY `trackingId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
