@@ -1,0 +1,6 @@
+ErrorDocument 404 404.php
+AddType text/vtt .vtt
+AddType text/srt .srt
+AddType video/ogg .ogv
+AddType video/mp4 .mp4
+AddType video/webm .webm

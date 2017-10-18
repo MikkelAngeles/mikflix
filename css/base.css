@@ -1,0 +1,129 @@
+
+a {
+	text-decoration: none;
+	list-style: none;
+	color: #229ba2;
+}
+table {
+	margin-bottom: 5px!important;
+}
+td {
+    padding: 0px!important;
+}
+#myChart {
+	max-width: 250px;
+	max-height: 200px;
+}
+tr a {
+	color: #0e7ac3;
+}
+.container-fluid {
+	margin: 0;
+}
+.tableTitle {
+	background: #e8e8e8;
+    text-align: center;
+    padding: 5px;
+    color: #229ba2;
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+h1 {
+	font-size: 20px;
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+	color: #0e67b5;
+	font-family: inherit;
+}
+h2 {
+	color: #4a4a4a;
+	font-size: 18px;
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+	font-family: inherit;
+}
+.submit {
+	margin: auto;
+    height: 50px;
+    border-radius: 5px;
+    background: #22adb5!important;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+.itemID {
+	margin: auto;
+	height: 70px;
+	font-size: 20px;
+	font-weight: bold;
+}
+.green {
+	color: #41b508;
+	font-weight: bold;
+}
+.yellow {
+	color: #bfa20d;
+	font-weight: bold;
+}
+.red {
+	color: #b50808;
+	font-weight: bold;
+}
+.rows {
+	padding: 0;
+	margin: 0;
+}
+.left {
+	font-weight: bold!important;
+	color: black;
+	font-size: 20px;
+}
+.right {
+	font-size: 20px;
+	font-weight: normal;
+	text-align: right;
+}
+
+div#mainWrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50px;
+    z-index: 1;
+}
+input.form-control {
+	border: none;
+    background: transparent;
+    box-shadow: none;
+}
+input.form-control:focus, input:focus{
+    outline: red;
+}
+.focusValues {
+    text-align: center;
+    height: 100px;
+    box-shadow: black;
+    font-size: 30px;
+    padding: 0;
+}
+.focusValues .title {
+    font-size: 80%;
+    background: #e8e8e8;
+    width: 100%;
+    height: 45px;
+    position: relative;
+    color: #229ba2;
+    font-weight: bold;
+    line-height: 45px;
+}
+.focusValues .value {
+	font-size: 80%;
+	line-height: 55px;	
+}
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+	padding: 0;
+}

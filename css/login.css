@@ -1,0 +1,42 @@
+input#user, input#password, input#password2, input#email {
+    border: 1px solid #ccc;
+}   
+body {
+	background: #5f5e5e;
+    background: url(http://www.c4.dk/files/images/0000/1106/tcm-oversigtsbillede.jpg);
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.container.login {
+    max-width: 500px;
+    margin-top: 20px;
+    background: white;
+    border: 10px solid #5bc0de;
+    background-color: white;
+    padding: 20px 20px 0px 20px;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+.logoBlock {
+    margin: auto;
+    float: none;
+    height: 130px;
+    width: 500px;
+}
+.userLogin, .createUser {
+    padding: 0px 0px 20px 0px;
+}
+h1 {
+    color: white;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: center;
+    font-style: italic;
+    font-family: arial;
+}
+.title {
+	margin: auto;
+	margin-top: 10px;
+}
