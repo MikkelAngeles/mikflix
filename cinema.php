@@ -22,7 +22,7 @@
 		</div>
 	</div>
 
-<div id="moveable"></div>
+<div id="previewTitle"></div>
 
 <script src="js/cinema.js"></script>
 

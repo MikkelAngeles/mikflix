@@ -152,23 +152,34 @@ $(document).ready(function(){
 		});
 		request.done(function () {
 			item = "";
-			item += '<div id="previewTitle" class="itemTitle" data-title-id="'+arr[0].titleId+'"><h1>'+arr[0].originalTitle+'</h1>';
-			item += '<div><p>'+arr[0].overview+'</p></div>';
-			item += '</div>';
-			$("#moveable").html(item);
+			item += '<div class="row banner" style="background-image: url(http://image.tmdb.org/t/p/w1280/'+arr[0].backdropPath+')">';
+			item += '<a href="storage/movies/completed/'+arr[0].originalTitle+'/'+arr[0].file+'"><div class="playIco"></div></a></div>';
+			item += '<div class="row itemTitle" data-title-id="'+arr[0].titleId+'">'+arr[0].originalTitle+'</div>';
+			item += '<div class="row overview"><p>'+arr[0].overview+'</p></div>';
+			$("#previewTitle").html(item);
+			
 		})
 	}
-
-	$('#cinemaContent').on('mouseenter', '.itemWrapper', function() {
-		$("#previewTitle").remove();
+	$("#previewTitle").hide();
+	$('#cinemaContent').on('click', '.itemWrapper', function() {
+		//$("#previewTitle").remove();
+		$("#previewTitle").show();
 		var ele = $(this);
 		var pos = ele.position();
 		var h = ele.height();
-		$("#moveable").css("top", (pos.top+h));
+		//$("#moveable").css("top", (pos.top+h));
 		var id = ele.attr("data-title-id");
 		generateDescription(id, ele);
-		
-	}).on('mouseleave', '.itemWrapper', function() {
-		$("#previewTitle").remove();
 	});
+
+	$("#previewTitle").click(function() {
+		$(this).hide();
+	});
+
+	$(document).on('keyup',function(evt) {
+    if (evt.keyCode == 27) {
+       $("#previewTitle").hide();
+    }
+});
+
 });

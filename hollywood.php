@@ -24,6 +24,7 @@ function setTitleData($id, $type) {
 		$popularity         = $_POST["popularity"];
 		$mediaType          = $_POST["mediaType"];
 		$posterPath         = $_POST["posterPath"];
+		$backdropPath       = $_POST["backdropPath"];
 		$lastUpdate         = date('Y-m-d h:i:s');
 	}
 	catch(exception $e) {
@@ -47,6 +48,7 @@ function setTitleData($id, $type) {
 						popularity,
 						mediaType,
 						posterPath,
+						backdropPath,
 						lastUpdate)
 			VALUES ('$titleId',
 				    '$originalTitle',
@@ -60,6 +62,7 @@ function setTitleData($id, $type) {
 					'$popularity',
 					'$mediaType',
 					'$posterPath',
+					'$backdropPath',
 					'$lastUpdate')"
 		);
 	} 
@@ -79,6 +82,7 @@ function setTitleData($id, $type) {
 				popularity     = '$popularity',
 				mediaType      = '$mediaType',
 				posterPath     = '$posterPath',
+				backdropPath   = '$backdropPath',
 				lastUpdate     = '$lastUpdate'
 			WHERE titleId = '$id'
 		");
@@ -390,7 +394,8 @@ if(isset($_GET["authKey"]) && $_GET["authKey"] == "getTitleData") {
 		        titledata.voteAverage,
 		        titledata.voteCount,
 		        titledata.popularity,
-		        titledata.posterPath
+		        titledata.posterPath,
+		        titledata.backdropPath
 		FROM movies
 		INNER JOIN titledata ON movies.titleId = titledata.titleId
 		WHERE movies.titleId = '$titleId'
@@ -400,26 +405,51 @@ if(isset($_GET["authKey"]) && $_GET["authKey"] == "getTitleData") {
 
 
 function getViewingHistory($userId, $status) {
-	$query = ("SELECT * FROM viewing_history WHERE userId = '$userId' AND status = '$status'");
+	$conn = setConnection();
+	$stmt = $conn->prepare("SELECT * FROM viewing_history WHERE userId = ? AND status = ?");
+	//Bind parameters to statement
+	$stmt->bind_param('ii', $userId, $status);	
+
+	//Execute query
+	$stmt->execute();
+
+	//Close statement & connection
+	$stmt->close();
+	$conn->close();
+
+	
 	queryServerReturnJson($query);
 }
-//Status null:   Not yet watched
-if(isset($_GET["authKey"]) && $_GET["authKey"] == "getUnwatched") {
-	getViewingHistory($_GET['userId'], null);
-}
-//Status 0: return viewing history.
-if(isset($_GET["authKey"]) && $_GET["authKey"] == "getViewingHistory") {
-	getViewingHistory($_GET['userId'], 0);
-}
-//Status 1: Watched, but incomplete
-if(isset($_GET["authKey"]) && $_GET["authKey"] == "getIncomplete") {
-	getViewingHistory($_GET['userId'], 1);
-}
-//Status 2: Watched and completed
-if(isset($_GET["authKey"]) && $_GET["authKey"] == "getCompleted") {
-	getViewingHistory($_GET['userId'], 2);
-}
 
+//Authentication key switch
+if(isset($_GET["authKey"]) && $_SERVER["REQUEST_METHOD"] == "GET") {
+	switch($_GET["authKey"]) {
+
+		//Data from viewing_history table
+		case 'getUnwatched':
+			getViewingHistory($_GET['userId'], null);
+			break;
+		case 'getViewingHistory':
+			getViewingHistory($_GET['userId'], 0);
+			break;
+		case 'getIncomplete':
+			getViewingHistory($_GET['userId'], 1);
+			break;
+		case 'getCompleted':
+			getViewingHistory($_GET['userId'], 2);
+			break;
+
+
+		//Data from movies & titleData
+		case 'getCompleted':
+			getViewingHistory($_GET['userId'], 2);
+			break;
+
+		//Return error if nothing was found	
+		default:
+			echo '[]';
+	}
+}
 
 
 

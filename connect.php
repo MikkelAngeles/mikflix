@@ -17,6 +17,16 @@
 		return $rs;
 	}
 
+	function setConnection() {
+		$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
+		if($conn->connect_error) {
+			die("Connection failed: " . $conn->connection_error);
+		}
+		else {
+			return $conn;
+		}
+	}
+
 	function returnCurrentUser() {
 		session_start();
 		return $_SESSION['user'];

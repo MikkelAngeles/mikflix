@@ -307,6 +307,7 @@ td {
     margin: 5px;
     transition: all 0.2s ease-in-out;
     position: relative;
+    cursor: pointer;
 }
 .itemWrapper:hover {
 
@@ -323,22 +324,15 @@ td {
 }
 
 .itemTitle {
-    width: 98%;
-    min-height: 20px;
-    top: 0;
-    left: 1px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 100%;
     color: #ffffff;
-    padding: 15px;
-    vertical-align: middle;
     background: rgba(0, 0, 0, 0.98);
     transition: all 0.3s ease-in-out;
-    opacity: 1;
-    float: left;
-    border-radius: 10px;
     margin: auto;
+    width: 100%;
+    height: 60px;
+    font-size: 40px;
+    line-height: 60px;
+    text-align: center;
 }
 .itemTitle:hover {
     opacity: 1;
@@ -401,4 +395,51 @@ td {
     left: 0;
     right: 0;
     margin: 85px 0px 0px 20px;
+}
+#previewTitle {
+    position: fixed;
+    margin: 0;
+    padding: 10px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 80px;
+    background: rgba(0, 0, 0, 0.79);
+    transition: all 0.3s ease-in-out;
+    z-index: 1000000000;
+}
+
+#previewTitle .row {
+    margin: 0;
+}
+#previewTitle .banner {
+    background: red;
+    padding: 15% 0%;
+    background-position: center center;
+    background-size: 100% auto;
+    position: relative;
+}
+#previewTitle .overview {
+    width: 100%;
+    padding: 20px;
+    background: #969696;
+    min-height: 20%;
+}
+#previewTitle .playIco {
+    background: rgb(0, 0, 0);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-image: url(http://addplaybuttontoimage.way4info.net/Images/Icons/7.png);
+    background-position: center center;
+    background-size: 60px auto;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    transition: all 0.3s ease-in-out;
+}
+#previewTitle .playIco:hover {
+    opacity: 0.8;
+    cursor: pointer;
 }
