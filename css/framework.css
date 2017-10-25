@@ -1,8 +1,9 @@
 body {
 	margin: 0;
 	padding: 0;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
     background: #141414;
+    transition: all 0.3s ease-in-out;
 }
 a {
 
@@ -301,16 +302,16 @@ td {
     padding: 10px;
 }
 .itemWrapper {
-    width: 7%;
+    width: 9%;
     min-width: 100px;
     float: left;
-    margin: 5px;
+    margin: 6px 10px 6px 0px;
     transition: all 0.2s ease-in-out;
     position: relative;
     cursor: pointer;
 }
 .itemWrapper:hover {
-
+    /*opacity: 0.5;*/
 }
 .itemThumbnail {
     border: 1px solid #000;
@@ -320,23 +321,25 @@ td {
     width: 100%;
     height: 100%;
     padding: 74% 0%;
-
+    transition: all 0.5s ease-in-out;
+}
+.itemThumbnail:hover {
+    filter: blur(1px);
+    opacity: 0.5;
 }
 
 .itemTitle {
     color: #ffffff;
-    background: rgba(0, 0, 0, 0.98);
+    background: rgb(10, 10, 10);
     transition: all 0.3s ease-in-out;
+    font-weight: 700;
+    text-shadow: 0 1px 1px rgba(0,0,0,.5);
     margin: auto;
     width: 100%;
     height: 60px;
-    font-size: 40px;
+    font-size: 200%;
     line-height: 60px;
     text-align: center;
-}
-.itemTitle:hover {
-    opacity: 1;
-    cursor: pointer;
 }
 
 .itemMeta {
@@ -386,7 +389,7 @@ td {
     margin: 20px 0px 20px 0px;
 }
 .cinemaRowTitle {
-    margin: 10px 0px 10px 5px;
+    margin: 10px 0px 10px 0px;
     font-size: 24px;
     color: white;
 }
@@ -404,9 +407,8 @@ td {
     right: 0;
     bottom: 0;
     left: 0;
-    padding: 80px;
+    padding: 6% 10% 10% 10%;
     background: rgba(0, 0, 0, 0.79);
-    transition: all 0.3s ease-in-out;
     z-index: 1000000000;
 }
 
@@ -414,17 +416,23 @@ td {
     margin: 0;
 }
 #previewTitle .banner {
-    background: red;
+    background: rgb(10, 10, 10);
     padding: 15% 0%;
+    background-image: url('../img/defaultbanner.jpg');
     background-position: center center;
     background-size: 100% auto;
+    background-repeat: no-repeat;
     position: relative;
 }
 #previewTitle .overview {
     width: 100%;
     padding: 20px;
-    background: #969696;
+    background: #151515;;
     min-height: 20%;
+    color: #b9b9b9;
+    font-size: 16px;
+    max-height: 40%;
+    overflow-y: auto;
 }
 #previewTitle .playIco {
     background: rgb(0, 0, 0);
@@ -440,6 +448,151 @@ td {
     transition: all 0.3s ease-in-out;
 }
 #previewTitle .playIco:hover {
-    opacity: 0.8;
+    opacity: 0.6;
     cursor: pointer;
+}
+
+
+
+#player {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#playerBack {
+    width: 100%;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.28);
+    position: absolute;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    z-index: 100000;
+    padding: 10px 0px 10px 10px;
+    opacity: 0;
+}
+
+#playerBack:hover {
+    opacity: 1;
+}
+
+
+div#playerControls {
+    position: fixed;
+    width: 90%;
+    background: #131313;
+    left: 5%;
+    bottom: 40px;
+    height: 80px;
+    border-radius: 20px;
+    border: 8px solid #3a3838;
+}
+
+.controlBlock {
+    height: 100%;
+    width: 80px;
+    border-right: 2px solid #2d2d2d;
+    line-height: 66px;
+    text-align: left;
+    padding: 0px 10px 0px 26px;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.controlBlock:hover {
+    font-size: 34px;
+    color: #385f73;
+}
+
+#playerControls .left {
+    float: left;
+}
+#playerControls .right {
+    float: right;
+}
+#playerControls .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: auto;
+    white-space: nowrap;
+}
+
+div#volumePop {
+    position: relative;
+    z-index: 10000;
+    top: -240px;
+    right: 0px;
+    width: 65px;
+    height: 156px;
+    background: #131313;
+    border: 8px solid #3a3838;
+    border-radius: 20px;
+    padding: 10px 14px 10px 15px;
+    z-index: 100000;
+}
+
+div#drag {
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 10px;
+    cursor: pointer;
+}
+div#dragContain {
+    width: 100%;
+    height: 100%;
+    background: blue;
+}
+div#timeline {
+    position: fixed;
+    background: red;
+    right: 0;
+    left: 0;
+    bottom: 140px;
+    z-index: 1;
+    width: 90%;
+    background: #131313;
+    left: 5%;
+    padding: 0px 0px 0px 5px;
+    border: 1px solid #3a3838;
+    border-radius: 20px;
+    max-height: 20px;
+}
+div#timeline h1, p {
+    float: left;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+div#trail {
+    background: #e50914;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    left: 0;
+}
+div#trailDrag {
+    width: 25px;
+    height: 25px;
+    background: #b70710;
+    border-radius: 25px;
+    position: absolute;
+    z-index: 5;
+    top: -4px;
+}
+#subtitles {
+    cursor: pointer;
+}
+div#subsWrapper {
+    width: 250px;
+    position: absolute;
+    border: 7px solid #3a3838;
+    background: #131313;
+    bottom: 80px;
+    right: 0;
+    border-radius: 20px;
+    padding: 10px;
 }

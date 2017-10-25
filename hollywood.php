@@ -235,13 +235,17 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH'])
 
 }
 
+if(isset($_GET['authKey']) && $_GET["authKey"] == "getExistingTitle") {
+		//getExistingTitles($query, 1);
+}
+
 function getFileData($id) {
 	queryServer("SELECT * FROM movies WHERE id = '$id'");
 }
 
 function getExistingTitles($s, $type) {
 	//1, = Existing titles suggestions
-	if($type == 1) $s = "SELECT * FROM movies WHERE title  LIKE '%$s%'";
+	if($type == 1) $s = "SELECT * FROM movies WHERE title LIKE '%$s%'";
 	//0, = Exact title validation
 	if($type == 0) $s = "SELECT * FROM movies WHERE title = '$s'";
 
@@ -251,8 +255,7 @@ function getExistingTitles($s, $type) {
 		$arr[$i] = $row;
 		$i++;
 	}
-	if($i == 0) print_r(json_encode(false)); 
-	else print_r(json_encode($arr)); 
+	echo json_encode($arr); 
 }
 
 function moveById($type) {
@@ -421,6 +424,23 @@ function getViewingHistory($userId, $status) {
 	queryServerReturnJson($query);
 }
 
+
+/*//////////////////////////////////
+When everything is tested and works correctly, fix all gets and posts into the below switch statement.
+Right now every ajax request has their own function, and each one is redundant. All can be merged into one global function, based on authKey.
+Secure all SQL querys into prepared procedures by binding parameters.
+
+And verify authentication by user session, ip and verification through database attempts etc.
+
+
+Status:  
+	- Most functions are tested
+	- The first 4 switch statements are working
+	- Tested a few prepared procedures for posting
+	- Need testing of get procedures
+
+//////////////////////////////////*/
+
 //Authentication key switch
 if(isset($_GET["authKey"]) && $_SERVER["REQUEST_METHOD"] == "GET") {
 	switch($_GET["authKey"]) {
@@ -447,14 +467,14 @@ if(isset($_GET["authKey"]) && $_SERVER["REQUEST_METHOD"] == "GET") {
 
 		//Return error if nothing was found	
 		default:
-			echo '[]';
+			
 	}
 }
 
 
 
 
-
+//Dev tool to generate test data.
 function generateFake() {
 	queryServer("insert into movies (titleId, title) values ('10201', 'Yes Man')");
 	queryServer("insert into movies (titleId, title) values ('190250', 'Abe')");
@@ -463,10 +483,11 @@ function generateFake() {
 	queryServer("insert into movies (titleId, title) values ('1726', 'Pop Aye')");
 	queryServer("insert into movies (titleId, title) values ('597', 'Titanic')");
 }
-
+/*
 if(isset($_GET['fake'])) {
 	for($i = 0; $i < 10; $i++) generateFake();
 }
+*/
 
 
 //Debugging
