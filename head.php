@@ -28,6 +28,9 @@
 <!--fontawesome -->
 <link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
 
+<!--cookie js-->
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
 <!-- Scripts & Apis -->
 <script src="js/scripts/ga.js"></script>
 

@@ -338,7 +338,7 @@ function getCinema($a, $b) {
 		        titledata.posterPath
 		FROM movies
 		INNER JOIN titledata ON movies.titleId = titledata.titleId
-		ORDER BY titledata.popularity DESC
+		ORDER BY movies.titleId DESC
 		LIMIT $a, $b"
 	);
 	while($row = mysqli_fetch_assoc($rs)) {

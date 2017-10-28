@@ -309,6 +309,8 @@ td {
     transition: all 0.2s ease-in-out;
     position: relative;
     cursor: pointer;
+    color: white;
+    font-size: 30px;
 }
 .itemWrapper:hover {
     /*opacity: 0.5;*/
@@ -341,7 +343,13 @@ td {
     line-height: 60px;
     text-align: center;
 }
-
+.tabs {
+    background: #9a7e13;
+    padding: 5px 10px 5px 10px;
+    font-size: 20px;
+    color: white;
+    min-height: 30px;
+}
 .itemMeta {
 
 }
@@ -410,6 +418,7 @@ td {
     padding: 6% 10% 10% 10%;
     background: rgba(0, 0, 0, 0.79);
     z-index: 1000000000;
+    overflow-y: scroll;
 }
 
 #previewTitle .row {
@@ -454,36 +463,38 @@ td {
 
 
 
+
 #player {
     position: absolute;
     width: 100%;
     height: 100%;
+    background: black;
 }
 
 #playerBack {
     width: 100%;
-    height: 50px;
+    height: 90px;
     background: rgba(0, 0, 0, 0.28);
     position: absolute;
     color: white;
     font-size: 50px;
     font-weight: bold;
     z-index: 100000;
-    padding: 10px 0px 10px 10px;
-    opacity: 0;
+    padding: 10px 0px 10px 40px;
 }
 
-#playerBack:hover {
-    opacity: 1;
-}
-
-
-div#playerControls {
+div#controlWrapper {
     position: fixed;
-    width: 90%;
+    bottom: 0px;
+    width: 100%;
+    height: 175px;
+    padding: 30px 5% 20px 5%;
+}
+div#playerControls {
+    position: relative;
+    width: 100%;
     background: #131313;
-    left: 5%;
-    bottom: 40px;
+    bottom: 0;
     height: 80px;
     border-radius: 20px;
     border: 8px solid #3a3838;
@@ -524,7 +535,7 @@ div#volumePop {
     position: relative;
     z-index: 10000;
     top: -240px;
-    right: 0px;
+    right: 15px;
     width: 65px;
     height: 156px;
     background: #131313;
@@ -547,42 +558,61 @@ div#dragContain {
     background: blue;
 }
 div#timeline {
-    position: fixed;
+    position: absolute;
+    height: 20px;
+    width: 90%;
+    bottom: 166px;
+}
+div#timeline #inner {
+    position: relative;
     background: red;
     right: 0;
     left: 0;
-    bottom: 140px;
     z-index: 1;
-    width: 90%;
     background: #131313;
-    left: 5%;
-    padding: 0px 0px 0px 5px;
     border: 1px solid #3a3838;
     border-radius: 20px;
-    max-height: 20px;
+    height: 20px;
+    margin: 0px 14px 0px 14px;
 }
-div#timeline h1, p {
+div#timeline #inner h1, p {
     float: left;
     margin: 0;
     padding: 0;
     font-size: 16px;
 }
 div#trail {
+    position: absolute;
     background: #e50914;
     height: 100%;
-    position: absolute;
     border-radius: 20px;
-    left: 0;
+    z-index: 90;
+    left: 14px;
 }
 div#trailDrag {
-    width: 25px;
-    height: 25px;
-    background: #b70710;
-    border-radius: 25px;
     position: absolute;
-    z-index: 5;
-    top: -4px;
+    width: 28px;
+    height: 28px;
+    background: #b70710;
+    border-radius: 28px;
+    top: -5px;
+    z-index: 100;
 }
+div#trailHover {
+    width: 150px;
+    height: 50px;
+    position: absolute;
+    background: #131313;
+    bottom: 40px;
+    right: 0px;
+    border: 5px solid #3a3838;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 45px;
+}
+
 #subtitles {
     cursor: pointer;
 }
@@ -591,8 +621,19 @@ div#subsWrapper {
     position: absolute;
     border: 7px solid #3a3838;
     background: #131313;
-    bottom: 80px;
+    bottom: 83px;
     right: 0;
     border-radius: 20px;
     padding: 10px;
+    z-index: 100;
+}
+
+
+div#full {
+    width: 100%;
+    height: 100%;
+    background: rgba(1, 0, 1, 0.3);
+    position: absolute;
+    transition: all 1s ease-in-out;
+    opacity: 1;
 }
