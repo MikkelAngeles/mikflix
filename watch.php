@@ -12,183 +12,127 @@
 
 <script>
 $(document).ready(function(){
-	//General
+	//Debug
 	console.log(sessionStorage.getItem("storedScrollTop"));
+
+	//Default general variables
 	var player   = document.getElementById('player');
-	var btn      = $('#play');
 	var playing  = false;
 	var updateDuration;
 
+	//Default play button variables
+	var playBtn  = $('#play');
 
-	var drag   = $("#trailDrag");
-	var trail =  $("#trail");
-	var dragPos = drag.position();
-	var l;
-	var icoPercent = 0;
-	var icoPercent = (drag.width()/drag.parent().width())*100;
-	var scaleFactor = 100/(100-icoPercent);
+	//Default timeline variables
+	var trailDrag   	=  $("#trailDrag");
+	var trail 	    	=  $("#trail");
+	var trailPos;
+	var trailPosLeft;
+	var trailIconWidth  = (trailDrag.width()/trailDrag.parent().width())*100;
+	var scaleFactor     = 100/(100-trailIconWidth);
 
-	//var startFrom = sessionStorage.getItem("")
+	//Default sound variables
+	var soundDrag 	 	 = $("#soundDrag");
+	var soundDragPos 	 = soundDrag.position();
+	var soundDragPosTop;
+	var volume = 1;
+
+	//Initialization of player
 	player.removeAttribute("controls");
 
-	var elem = document.getElementById("player");
-
-	console.log("Cookies 1: " + Cookies.get('1'));
-	console.log("Cookies volume: " + Cookies.get('volume'));
-
+	//Attempt to start video from cookies
 	try {
 		player.currentTime = Cookies.get('1');
 	}
 	catch(e) {
 		console.log(e);
 	}
+
+	//Attempt to set volume from cookies
 	try {
-		player.volume 	   = Cookies.get('volume');
+		volume = Cookies.get('volume');
 	}
 	catch(e) {
 		console.log(e);
 	}
 	finally {
+		player.volume = volume;
+		console.log(volume);
+		soundDrag.css("top", (100-(volume*100))+"px");
 		player.play();
 	}
 
+
+	//Create a new player based on input. NOT USED YET.
 	function newPlayer(id, volume, currentTime) {
 		var id = this.id;
 		var volume = this.volume;
 		var currentTime = this.currentTime;
 		var mediaPath; 
 		var subs;
-
-		//Fetch media
-
-
 	}
 
-	//Display controls
-	/*
-	var mouseafk;
-	$("#full").mousemove(function() {
-		$("#full").css("opacity", 1);
-		clearTimeout(mouseafk);
-		if(!player.paused) {
-			mouseafk = setTimeout(function() {
-				$("#full").css("opacity", 0);
-			}, 2000);
-		}
-		
-	});*/
 
-	$('#back').click(function() {
-		sessionStorage.setItem("back", 1);
-		window.location.href = "cinema.php";
-	});
+	/* -------------------- Controllers ------------------ */ 
 
-	//Play/pause controller
-	$('#play').click(function() {
-		player.paused ? player.play() : player.pause();
-		
-	});
+	//////////////////
+	//Play & Pause 
+	//////////////////
 
-	player.onplay = function() { togglePlay(); }
+	$('#play').click(function() { player.paused ? player.play() : player.pause(); });
+	player.onplay  = function() { togglePlay(); }
 	player.onpause = function() { togglePlay(); }
 
 	function togglePlay() {
-		btn.html() == '<i class="fa fa-pause" aria-hidden="true"></i>' ? btn.html('<i class="fa fa-play" aria-hidden="true"></i>') : btn.html('<i class="fa fa-pause" aria-hidden="true"></i>');
+		playBtn.html() == '<i class="fa fa-pause" aria-hidden="true"></i>' ? playBtn.html('<i class="fa fa-play" aria-hidden="true"></i>') : playBtn.html('<i class="fa fa-pause" aria-hidden="true"></i>');
 		playing = !playing;
-		if(playing) timeStamp();
-		else clearTimeout(updateDuration);
-		$("#duration").html("Duration: "+ player.duration); 
+		timeStamp();	
 	}
 
 	function timeStamp() {
 		if(playing) {
 			updateDuration = setTimeout(function(){
-				timeStamp();
+				var v = (parseFloat(player.currentTime) / (parseFloat(player.duration)*scaleFactor))*100;
+		        trailDrag.css("left", v+ "%");
+		        trail.css("width", v+ "%");
 				Cookies.set('1', player.currentTime);
-				setTrail();
+				timeStamp();
 				$("#trailHover").html((player.currentTime/60).toFixed(2));
 			}, 1000);
 		}
+		else { clearTimeout(updateDuration); }
 	}
 
 
-	//Timeline
-	function setTrail() {
-		var v = (parseFloat(player.currentTime) / (parseFloat(player.duration)*scaleFactor))*100;
-        drag.css("left", v+ "%");
-        trail.css("width", v+ "%");
-	}
 
+	//////////////////
+	//Volume
+	//////////////////
 
-	drag.draggable({
-	    containment: 'parent',
-	    snap: '.gridlines',
-	    axis: 'x',
-	    stop: function () {
-	        /*l = ( 100 * (parseFloat($(this).position().left / parseFloat($(this).parent().width()))) ) + "%" ;
-	        $(this).css("left", l);
-	        trail.css("width", l);*/
-	        player.play();
-	    }
+	soundDrag.draggable({ containment: "parent" });
+
+	soundDrag.on("drag", function() {
+		soundDragPos    = soundDrag.position();
+		soundDragPosTop = soundDragPos.top;
+		volume = ((110-soundDragPosTop)/100).toFixed(2);
+		Cookies.set('volume', volume);
+		player.volume = volume;
+		console.log(volume);
 	});
 
-	drag.on( "drag", function() {
-		icoPercent = (drag.width()/drag.parent().width())*100;
-		scaleFactor = 100/(100-icoPercent);
-		l = ( 100 * parseFloat(drag.position().left / parseFloat(drag.parent().width())));
-        drag.css("left", l+ "%");
-        trail.css("width", l+ "%");
-        
-        scaledDuration = player.duration*scaleFactor;
+	var volumePump = $("#volumePump");
 
-        current  = (scaledDuration*l)/100;
-
-        //$("#timedata").html("Real duration:  "+player.duration + " | Cursor pos: "+ l.toFixed(4) + " | Video actual pos: "+ current.toFixed(3));
-
-		player.currentTime = current;
-		player.pause();
-		
-		$("#trailHover").html((player.currentTime/60).toFixed(2));
-		//console.log("Video should play at: "+player.duration + " / " +current);
-	});
-
-
-
-
-	/*
-	$("#trailDrag").hover(function() {
-		$(this).append(player.currentTime);
-	});*/
-
-	//Sound controller	
-	var dragBtn = $("#drag");
-	dragBtn.draggable({ containment: "parent" });
-
-	function setVolume(v) {
-		v = 110-v;
-		console.log("Player volume is now: " + v);
-		player.volume = (v/100);
-		Cookies.set('volume', player.volume);
-		console.log("Player volume is now: " + player.volume);
-	}
-
-	dragBtn.on( "dragstop", function() {
-		dragPos = dragBtn.position();
-		posTop = dragPos.top;
-		console.log(posTop);
-		setVolume(posTop);
-	});
-
-	var vp = $("#volumePop");
-	vp.hide();
 	$('#volume').click(function() {
-		vp.fadeToggle("fast", "linear");
+		volumePump.fadeToggle("fast", "linear");
 	});
 
-	//Fullscreen mode
+	//////////////////
+	//Fullscreen
+	//////////////////
+
+	var browser = 0;
 	$("#fullscreen").click(function() {
 		toggleFullScreen();
-		console.log("fire");
 	});
 
 	//Update for cross browsers later. Works in Chrome atm.
@@ -199,8 +143,10 @@ $(document).ready(function(){
 	}
 
 
-
+	//////////////////
 	//Subtitles
+	//////////////////
+
 	var sw = $("#subsWrapper");
 	sw.hide();
 	$('#subtitles').click(function() {
@@ -209,62 +155,135 @@ $(document).ready(function(){
 	});
 	
 	function appendSubs(src) {
-		s = '<track src="'+src+'" srclang="en" kind="subtitles" default="true">';
+		s = '<track src="'+src+'" srclang="en" kind="subtitles" default="true" class="hover">';
 		$("#player").append(s);
 	}
+
+	var subs = ['English', 'Danish'];
+	subs.sort();
+
+	var subsList = '<ul>'
+
+	$.each(subs, function(v,k) {
+		subsList += '<li>'+k+'</li>';
+	});
+
+	subsList += '</ul>'
+
+	$("#selectSub").append(subsList);
+
+	$("#selectSub").on('click', 'li', function() {
+		console.log(this);
+		s = '<track src="storage/movies/completed/iron man/subs/bbt.vtt" data-id="'+this+'" srclang="en" kind="subtitles" default="true" class="hover">';
+		$("#player").html(s);
+	});
+
+	//////////////////
+	//Timeline
+	//////////////////
+
+	trailDrag.draggable({
+	    containment: 'parent',
+	    snap: '.gridlines',
+	    axis: 'x',
+	    stop: function () {
+	        player.play();
+	        $("#trailHover").hide();
+	    }
+	});
+
+	trailDrag.on("drag", function() {
+		trailIconWidth = (trailDrag.width()/trailDrag.parent().width())*100;
+		scaleFactor = 100/(100-trailIconWidth);
+		trailPosLeft = ( 100 * parseFloat(trailDrag.position().left / parseFloat(trailDrag.parent().width())));
+        trailDrag.css("left", trailPosLeft+ "%");
+        trail.css("width", trailPosLeft+ "%");
+        scaledDuration = player.duration*scaleFactor;
+        current  = (scaledDuration*trailPosLeft)/100;
+		player.currentTime = current;
+		player.pause();
+		$("#trailHover").html((player.currentTime/60).toFixed(2));
+		$("#trailHover").show();
+	});
+
+
+
+	//////////////////
+	//Back
+	//////////////////
+
+	$('#back').click(function() {
+		sessionStorage.setItem("back", 1);
+		window.location.href = "cinema.php";
+	});
+
+
+
+	//////////////////
+	//Eventlisteners
+	//////////////////
+
+	//Display controls
+	var mouseafk;
+	$("#full").mousemove(function() {
+		$("#full").css("opacity", 1).css("cursor", "default");
+		player.css("")
+		clearTimeout(mouseafk);
+		if(!player.paused) {
+			mouseafk = setTimeout(function() {
+				$("#full").css("opacity", 0).css("cursor", "none");
+			}, 3500);
+		}	
+	});
+
+	//Pause player on space
+	$(document).on('keyup',function(evt) {
+	    if (evt.keyCode == 32) {
+	       player.paused ? player.play() : player.pause();
+	    }
+	});
+	
 	
 });
 </script>
-	<video autobuffer autoloop loop controls id="player" controls="controls">
-		<source src="<?php echo $id ?>">
-	</video>
+
+
+
+<video autobuffer controls id="player">
+	<source src="<?php echo $id ?>">
+</video>
 <div id="full">
 	<div id="playerBack">
 		<i class="fa fa-arrow-circle-left" aria-hidden="true" id="back"></i>
 		<div id="timedata"></div>
 	</div>
-
-
-	
-
-	<div id="controlWrapper">
-		
+	<div id="controlWrapper">	
 		<div id="timeline">
-
 			<div id="trailDrag"><div id="trailHover"></div></div>
 			<div id="trail"></div>
 			<div id="inner"></div>
 		</div>
-
 		<div id="playerControls">	
 			<div class="controlBlock left" id="play">
 				<i class="fa fa-play" aria-hidden="true"></i>
 			</div>
-
 			<div class="controlBlock left" id="volume">
 				<i class="fa fa-volume-up" aria-hidden="true"></i>
-				<div id='volumePop'>
-					<div id="dragContain"><div id="drag"></div></div>
+				<div id='volumePump'>
+					<div id="dragContain"><div id="soundDrag"></div></div>
 				</div>
 			</div>
-
-			<div class="controlBlock right" id="subtitles">
-				<i class="fa fa-cc" aria-hidden="true"></i>
-				<div id='subsWrapper'>
-					<div id="selectSub">Default</div>
-				</div>
-			</div>
-
 			<div class="controlBlock right" id="fullscreen">
 				<i class="fa fa-arrows-alt" aria-hidden="true"></i>
 			</div>
-
-			<div class="controlBlock title">
-				Title TitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitle
+			<div class="controlBlock right" id="subtitles">
+				<i class="fa fa-cc" aria-hidden="true"></i>
+				<div id='subsWrapper'>
+					<div id="selectSub"></div>
+				</div>
 			</div>
+			<div class="controlBlock title"></div>
 		</div>
-
 	</div>
-	
 </div>
 
