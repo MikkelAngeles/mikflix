@@ -9,9 +9,10 @@ function setDirectoryBy($prefix) {
 	return $_SESSION['globalSettings'][$prefix]['value'];;
 }
 
-function setTitleData($id, $type) {
+function setTitleData($type) {
 	$noError = true;
 	try {
+		$id 				= $_POST["titleId"];
 		$titleId     	    = $_POST["titleId"];
 		$originalTitle      = $_POST["originalTitle"];
 		$genre    	        = $_POST["genre"];
@@ -91,6 +92,7 @@ function setTitleData($id, $type) {
 
 function submitUpload() {
 	//Input data
+	$published   =  $_POST["published"];
 	$titleId 	 =  $_POST["titleId"];
 	$title 	     =  $_POST["title"];
 	$file  		 =  $_POST["file"];
@@ -112,19 +114,21 @@ function submitUpload() {
 			$rs = queryServer("
 				INSERT INTO movies
 							(titleId,
+							published,
 							title,
 							file,
 							size,
 							uploadedBy,
 							uploaded)
 				VALUES ('$titleId',
+				     	'$published',
 					    '$title',
 						'$file',
 						'$size',
 						'$uploadedBy',
 						'$uploaded')"
 			);
-			setTitleData(0, 1);
+			setTitleData(1);
 		}
 	}
 	if(!file_exists($subDir) && !is_dir($subDir)) {
@@ -197,8 +201,8 @@ function moveDir($old, $new) {
 
 //Eventlistener for auto-upload.
 if(isset($_POST)) {
-	if(!empty($_FILES['mediaFile'])) autoUpload($_POST["user"], $_FILES['mediaFile'], 1);
-	if(!empty($_FILES['subtitleFile'])) autoUpload($_POST["user"], $_FILES['subtitleFile'], 0);;
+	if(!empty($_FILES['mediaFile'])) autoUpload($_SESSION["user"], $_FILES['mediaFile'], 1);
+	if(!empty($_FILES['subtitleFile'])) autoUpload($_SESSION["user"], $_FILES['subtitleFile'], 0);
 }
 
 //Eventlistener for Ajax requests
@@ -338,6 +342,7 @@ function getCinema($a, $b) {
 		        titledata.posterPath
 		FROM movies
 		INNER JOIN titledata ON movies.titleId = titledata.titleId
+		WHERE movies.published = 1 AND movies.status = 1
 		ORDER BY movies.titleId DESC
 		LIMIT $a, $b"
 	);
@@ -377,6 +382,7 @@ if(isset($_GET["authKey"]) && $_GET["authKey"] == "getRecentlyAdded") {
 		        titledata.posterPath
 		FROM movies
 		INNER JOIN titledata ON movies.titleId = titledata.titleId
+		WHERE movies.published = 1 AND movies.status = 1
 		ORDER BY movies.id DESC
 		LIMIT $max");
 	queryServerReturnJson($query);
@@ -441,7 +447,7 @@ Status:
 
 //////////////////////////////////*/
 
-//Authentication key switch
+//Authentication key switch 
 if(isset($_GET["authKey"]) && $_SERVER["REQUEST_METHOD"] == "GET") {
 	switch($_GET["authKey"]) {
 
@@ -459,20 +465,57 @@ if(isset($_GET["authKey"]) && $_SERVER["REQUEST_METHOD"] == "GET") {
 			getViewingHistory($_GET['userId'], 2);
 			break;
 
+		//Return types of subtitles allowed
+		case 'getSubtitleLabels':
+			queryServerReturnJson("SELECT * FROM subtitle_labels ORDER BY ID ASC");
+			break;
 
 		//Data from movies & titleData
 		case 'getCompleted':
 			getViewingHistory($_GET['userId'], 2);
 			break;
 
+		case 'getUser':
+			echo json_encode($_SESSION['user']);
+			break;
+
+
 		//Return error if nothing was found	
-		default:
-			
+		default:	
 	}
 }
 
+if(isset($_POST["authKey"]) && $_SERVER["REQUEST_METHOD"] == "POST") {
+	switch($_POST["authKey"]) {
 
+		case 'submitMovie':
+			//autoUpload($_SESSION["user"], $_FILES['subtitle'], 0);'
+			//print_r($_FILES);
+			//print_r($_POST);
+			submitUpload();
+			break;
 
+		case 'postSubtitle':
+			autoUpload($_SESSION["user"], $_FILES['subtitle'], 0);
+			break;
+
+		case 'clearTmp':
+			$path = setDirectoryBy('movieTmp');
+			$path = $path.$_SESSION['user'];
+			rrmdir($path);
+			break;
+
+		case 'discardTmpFile':
+			$path = setDirectoryBy('movieTmp');
+			$path = $path.$_SESSION['user'];
+			$file = $path.'/test.mp4';
+			unlink($file);
+			break;
+
+		//Return error if nothing was found	
+		default:	
+	}
+}
 
 //Dev tool to generate test data.
 function generateFake() {

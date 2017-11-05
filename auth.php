@@ -16,7 +16,7 @@ if(isset($_POST)) {
 		if($realPw == $pw) {
 			session_start();
 			setSession($usr);
-		    header('location: index.php');
+		    header('location: cinema.php');
 		} else {
 			header('Location: login.php?login_attempt=1');
 		}

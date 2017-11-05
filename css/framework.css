@@ -143,6 +143,9 @@ h1.userImgTopMenu {
     margin-left: 10px;
     color: white;
 }
+.displayNoneUltra {
+    display: none!important;
+}
 .displayNone {
 	display: none;
 }
@@ -233,19 +236,21 @@ div#backgroundFader {
 }
 .bar { 
     width: 0%; 
-    height: 30px; 
+    height: 25px; 
     border-radius: 3px; 
 }
 .percent { 
-    position: relative;
     display: inline-block;
-    top: -27px;
+    top: -21px;
     left: 48%;
-    color: #313131;
-    font-size: 18px;
+    color: #f5f5f5;
+    font-size: 14px;
+    line-height: 25px;
     font-weight: bold;
     font-family: inherit;
     z-index: 100;
+    width: 100%;
+    text-align: center;
 }
 .previewWrapper .previewTitle {
     font-size: 30px;
@@ -254,7 +259,9 @@ div#backgroundFader {
 .well.previewWrapper {
     height: 350px;
 }
+#addNew {
 
+} 
 .uploadField {
     width: 100%;
     height: 150px;
@@ -280,11 +287,11 @@ div#backgroundFader {
     text-align: center;
 }
 #submitUpload {
-    width: 100%;
+   /* width: 100%;
     height: 70px;
     font-size: 30px;
     font-weight: bold;
-    line-height: 56px;
+    line-height: 56px;*/
 }
 .center {
     text-align: center;
@@ -652,13 +659,241 @@ div#full {
 }
 
 ::cue {
-    color: yellow;
+    color: #FFC20F;
     background: none;
+    font-size: 50px;
+    font-weight: bold;
+    padding: 0px 0px 200px 0px;
+    transition: all 0.5s ease-in-out;
+    size: 100%;
+}
+video::-webkit-media-text-track-display {
+    
+}
+
+
+/*New upload*/
+
+#uploadWrapper {
+    margin-top: 10px;
+}
+
+#uploadWrapper #previewMode {
+}
+
+#uploadWrapper #previewMode #meta {
+    width: 100%;
+    height: 253px;
+}
+#uploadWrapper #previewMode #poster {
+    width: 170px;
+    height: 253px;
+    margin-right: 10px;
+    float: left;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-image: url(https://www.directv.com/img/movies.jpg);
+}
+#uploadWrapper #previewMode #video {
+    width: 20%;
+    height: auto;
+}
+#uploadWrapper #previewMode #title {
     font-size: 30px;
     font-weight: bold;
-    padding: 0px 0px 20px 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-::cue(.hover) {
-    line-height: 500px;
-    color red;
+#uploadWrapper #previewMode #overview {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 211px;
 }
+#uploadWrapper #files  {
+    min-height: 85px;
+}
+#uploadWrapper #files #labelWrapper{
+    width: 100%;
+    text-align: center;
+}
+
+#uploadWrapper #files h1 {
+    float: left;
+}
+#uploadWrapper #files label {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    background: rgb(35, 35, 35);
+    border-radius: 4px;
+    border: 3px dashed #141414;
+    padding: 10px 0px 10px 0px;
+    margin: 0;
+}
+#uploadWrapper #files label:hover {
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+#uploadWrapper #files label .fa {
+    font-size: 50px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    padding: 0px 0px 5px 0px;
+}
+#uploadWrapper #files #selectedFile{
+    padding: 15px 10px 10px 10px;
+    display: none;
+}
+#uploadWrapper #files #selectedFile #fileName{
+    font-size: 22px;
+    padding: 0px 10px 7px 0px;
+}
+#uploadWrapper #files #selectedFile #fileSize{
+    font-size: 14px;
+    line-height: 26px;
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
+#uploadWrapper #files #selectedFile #discard {
+    font-size: 25px;
+    color: rgb(177, 36, 36);
+    float: right;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+#uploadWrapper #files #selectedFile .fileProgress{
+    width: 90%;
+    clear: both;
+    max-height: 25px;
+    float: left;
+}
+
+#uploadWrapper #videoPreview video {
+    background: black;
+    background-image:url('http://getwallpapers.com/wallpaper/full/1/5/8/155286.jpg');
+    background-position: center center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+.uploadItemRow {
+    border-bottom: 1px dotted #676767;
+    height: 50px;
+    padding: 10px 0px 10px 0px;
+    line-height: 30px;
+}
+.uploadItemRow #title {
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    float: left;
+    padding: 0px 10px 0px 0px;
+    line-height: 30px;
+}
+.uploadItemRow #title h2 {
+    color: #d8d8d8;
+}
+.uploadItemRow .fa {
+    font-size: 27px;
+    margin: 0;
+    padding: 0;
+    transition: all 0.2s ease-in-out;
+    display: block;
+}
+.uploadItemRow .fa:hover {
+    font-size: 30px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+label.uploadIcon {
+    float: left;
+    width: 50px;
+    color: #1062a2;
+    transition: all 0.3s ease-in-out;
+}
+label.uploadIcon:hover {
+    cursor: pointer;
+}
+
+label.uploadIcon .fa-check-circle {
+    color: #2ba230;
+}
+.uploadItemRow .previewSubtitle {
+    float: right;
+    height: 100%;
+}
+
+
+/*Custom blocks*/
+
+.mBlock {
+    background: #2b2b2b;
+    color: #d8d8d8;
+    border-radius: 5px;
+    margin: 15px 0px 15px 0px;
+}
+.mBlock .mHeader {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    background-color: #1062a2;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.8);
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+    font-family: inherit;
+}
+
+.mBlock .mRow{
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/*Icon settings*/
+.mBlock .iconBefore:before {
+    font-family: FontAwesome;
+    margin-right: 9px;
+}
+
+/*All icons by name*/
+.mBlock .icon-upload:before { content: "\f0ee"; }
+.mBlock .icon-film:before { content: "\f008"; }
+.mBlock .icon-subtitle:before { content: "\f20a"; }
+.mBlock .icon-settings:before { content: "\f013"; }
+.mBlock .icon-preview:before { content: "\f06e"; }
+.mBlock .icon-search:before{ content: "\f002"; }
+
+
+
+
+/*error boxes*/
+
+.appendError {
+    /*position: absolute;
+    left: 0px;
+    top: -50px;*/
+    border-radius: 5px;
+}
+.errorContent {
+    padding: 5px;
+    background: green;
+}
+
+/*@Override*/
+.alert {
+    margin: 0;
+    padding: 10px;
+}
+/*@Override*/

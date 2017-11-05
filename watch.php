@@ -42,7 +42,7 @@ $(document).ready(function(){
 
 	//Attempt to start video from cookies
 	try {
-		player.currentTime = Cookies.get('1');
+		if(Cookies.get('1')) player.currentTime = Cookies.get('1');
 	}
 	catch(e) {
 		console.log(e);
@@ -50,7 +50,7 @@ $(document).ready(function(){
 
 	//Attempt to set volume from cookies
 	try {
-		volume = Cookies.get('volume');
+		if(Cookies.get('volume')) volume = Cookies.get('volume');
 	}
 	catch(e) {
 		console.log(e);
@@ -173,10 +173,63 @@ $(document).ready(function(){
 	$("#selectSub").append(subsList);
 
 	$("#selectSub").on('click', 'li', function() {
-		console.log(this);
-		s = '<track src="storage/movies/completed/iron man/subs/bbt.vtt" data-id="'+this+'" srclang="en" kind="subtitles" default="true" class="hover">';
-		$("#player").html(s);
+		//console.log(this);
+		//s = '<track label="Captions" kind="captions" srclang="en" src="storage/movies/completed/iron man/subs/bbt.vtt" id="dynamicTrack" default>';
+		//$("#player").html(s);
+		$("#dynamicTrack").attr("src", "storage/movies/completed/iron man/subs/bbt.vtt");
+		//console.log(getDynamicCues());
+		reloadCues();
 	});
+
+	var dynamicCues  = document.getElementById('dynamicTrack').track.cues;
+	var cueReloadStatus = false;
+	var cueRotation;
+	var counter = 1;
+
+	function reloadCues() {
+		if(!cueReloadStatus) {
+			dynamicCues  = []; //Reset cues
+			dynamicCues  = document.getElementById('dynamicTrack').track.cues;
+			cueReloadStatus = true;
+		}
+		//console.log(dynamicCues.length == 0);
+		console.log("Cues length: " + dynamicCues.length);
+		if(dynamicCues.length == 0) { 
+			cueRotation = setTimeout(function() {
+				console.log("rotation:" + counter);
+				counter++;
+				reloadCues(); //Recursively run own function until new cues are ready.
+			}, 100);
+		}
+		else {
+			cueReloadStatus = false;
+			clearTimeout(cueRotation);
+			console.log(dynamicCues.length);
+			setCueLines(1);
+		}
+	}
+
+	function setCueLines(pos) {
+		var val;
+		var enum = {
+			'integer': 50,
+			'percent': "%"
+		}
+		if(pos == 1) val = 10;
+		else val = "auto"
+		for(i in dynamicCues) {
+			console.log("Setting val to: "+ val);
+			dynamicCues[i].line = val;
+			dynamicCues[i].line = val;
+		}
+	}
+
+
+
+	/*
+
+
+	*/
 
 	//////////////////
 	//Timeline
@@ -225,15 +278,25 @@ $(document).ready(function(){
 
 	//Display controls
 	var mouseafk;
+	var controlStatus = true;
+
 	$("#full").mousemove(function() {
-		$("#full").css("opacity", 1).css("cursor", "default");
-		player.css("")
 		clearTimeout(mouseafk);
-		if(!player.paused) {
-			mouseafk = setTimeout(function() {
-				$("#full").css("opacity", 0).css("cursor", "none");
-			}, 3500);
-		}	
+		if(!controlStatus){
+			$("#full").css("opacity", 1).css("cursor", "default");
+			setCueLines(1);
+			controlStatus = true;
+			console.log("Set control status: "+ controlStatus)
+		} else {
+			if(!player.paused) {
+				mouseafk = setTimeout(function() {
+					$("#full").css("opacity", 0).css("cursor", "none");
+					setCueLines(0);
+					controlStatus = false;
+					console.log("Set control status: "+ controlStatus)
+				}, 3500);
+			}	
+		}
 	});
 
 	//Pause player on space
@@ -251,6 +314,7 @@ $(document).ready(function(){
 
 <video autobuffer controls id="player">
 	<source src="<?php echo $id ?>">
+	<track label="Captions" kind="captions" srclang="en" src="" id="dynamicTrack" default>
 </video>
 <div id="full">
 	<div id="playerBack">
@@ -286,4 +350,3 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
-

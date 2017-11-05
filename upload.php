@@ -1,5 +1,6 @@
 <?php
 	include 'header.php';
+	$id =  $_SERVER['QUERY_STRING'];
 ?>
 
 <script>
@@ -466,6 +467,7 @@
 
 
 <div id="uploaderWrapper" class="row">
+	<div id="status"></div>
 	<div class="col-md-6">
 		<div class="well uploadTitleWrap">
 			<input id="uploadTitle" type="text" class="uploadTitle" placeholder="Enter a title...">
@@ -494,7 +496,7 @@
 		    
 		    
 	    </div>
-	    <a href="JavaScript:void(0)"  id="submitUpload" class="btn btn-success">Submit upload!</a>
+	    <a href="JavaScript:void(0)"  id="submitUpload" class="btn btn-success">Publish!</a>
 	    <div class="alert alert-success uploadAlert" hidden>
 			<strong>Success!</strong> Your movie was successfully uploaded to MikFlix!
 		</div>

@@ -34,13 +34,17 @@
 <!-- Scripts & Apis -->
 <script src="js/scripts/ga.js"></script>
 
+<!-- Pace -->
+<script src="js/pace/pace.js"></script>
+<link href="js/pace/themes/red/pace-theme-minimal.css" rel="stylesheet" />
+
 <!-- Internal resources -->
 <link rel="stylesheet" type="text/css" href="css/base.css" />
 <link rel="stylesheet" type="text/css" href="css/framework.css" />
 <link rel="stylesheet" type="text/css" href="plugins/font-awesome/css/font-awesome.min.css">
 
 <!--Custom js-->
-<script src="js/functions.js"></script>
+<script src="js/main.js"></script>
 <script src="js/actionControllers.js"></script>
 
 </head>
